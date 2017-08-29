@@ -37,7 +37,7 @@ describe 'usbguard class' do
     it_behaves_like 'a idempotent resource'
     describe file('/etc/usbguard/rules-managed-by-puppet.conf') do
       it { is_expected.to be_file }
-      its(:content) { is_expected.to match('allow with-interface equals { 08:*:* }') }
+      its(:content) { is_expected.to match(%r{allow with-interface equals \{ 08:\*:\* \}}) }
     end
   end
 
@@ -45,7 +45,7 @@ describe 'usbguard class' do
     let(:pp) do
       <<-EOS
       include ::usbguard
-      
+
       $rule_content = @(CONTENT)
         allow with-interface equals { 08:*:* }
         reject with-interface all-of { 08:*:* 03:00:* }
@@ -53,7 +53,7 @@ describe 'usbguard class' do
         reject with-interface all-of { 08:*:* e0:*:* }
         reject with-interface all-of { 08:*:* 02:*:* }
         | CONTENT
-      
+
       # DON'T DO THIS ON YOUR COMPUTER OR YOU MIGHT LOCK YOU OUT
       # this is just an example. :-)
       usbguard::rule { 'allow usb disks without keyboard interface':
@@ -63,9 +63,10 @@ describe 'usbguard class' do
     end
 
     it_behaves_like 'a idempotent resource'
+
     describe file('/etc/usbguard/rules-managed-by-puppet.conf') do
       it { is_expected.to be_file }
-      its(:content) { is_expected.to match('eject with-interface all-of { 08:*:* 03:00:* }') }
+      its(:content) { is_expected.to match('reject with-interface all-of { 08:\*:\* 03:00:\* }') }
     end
   end
 end
