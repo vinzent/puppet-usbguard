@@ -13,6 +13,7 @@ class usbguard(
   String  $package_name = 'usbguard',
   String  $service_name = 'usbguard',
   Enum['running', 'stopped'] $service_ensure = 'running',
+
   # usbguard-daemon.conf settings settings
   String $daemon_audit_file_path = '/var/log/usbguard/usbguard-audit.log',
   Boolean $daemon_device_rules_with_port = false,
@@ -23,6 +24,8 @@ class usbguard(
   Enum['allow','block','reject','keep','apply-policy'] $daemon_present_device_policy= 'apply-policy',
   String $daemon_rule_file = '/etc/usbguard/rules-managed-by-puppet.conf',
 
+  # rules to provide by hiera/lookup or as class param
+  Optional[Array[String]] $rules = undef,
 ) {
   contain ::usbguard::install
   contain ::usbguard::config
@@ -32,4 +35,9 @@ class usbguard(
   -> Class['::usbguard::config']
   ~> Class['::usbguard::service']
 
+  if $rules != undef {
+    $rules.each |$rule| { 
+      ::usbguard::rule { $rule: }
+    }
+  }
 }

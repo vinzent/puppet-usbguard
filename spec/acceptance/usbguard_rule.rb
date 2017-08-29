@@ -1,50 +1,38 @@
 require 'spec_helper_acceptance'
 
-describe 'usbguard class' do
-  context 'simple include' do
+describe 'usbguard::rule defined type' do
+  context 'with a rule (single line)' do
     let(:pp) do
       <<-EOS
         class { 'usbguard': }
+        usbguard::rule { 'allow with-interface equals { 08:*:* }': }
       EOS
     end
 
     it_behaves_like 'a idempotent resource'
-
-    describe package('usbguard') do
-      it { is_expected.to be_installed }
-    end
-
-    describe file('/etc/usbguard/usbguard-daemon.conf') do
-      its(:content) { is_expected.to match('Managed by puppet') }
-    end
-
     describe file('/etc/usbguard/rules-managed-by-puppet.conf') do
       it { is_expected.to be_file }
-    end
-
-    describe service('usbguard') do
-      it { is_expected.to be_enabled }
-      it { is_expected.to be_running }
+      its(:content) { is_expected.to match(%r{allow with-interface equals \{ 08:\*:\* \}}) }
     end
   end
 
-  context 'with some rules by param' do
+  context 'with a rule (multi line)' do
     let(:pp) do
       <<-EOS
+      include ::usbguard
+
       $rule_content = @(CONTENT)
         allow with-interface equals { 08:*:* }
         reject with-interface all-of { 08:*:* 03:00:* }
         reject with-interface all-of { 08:*:* 03:01:* }
         reject with-interface all-of { 08:*:* e0:*:* }
+        reject with-interface all-of { 08:*:* 02:*:* }
         | CONTENT
 
-      # DON'T DO THIS ON YOUR COMPUTER OR YOU MIGHT LOCK YOURSELF OUT
+      # DON'T DO THIS ON YOUR COMPUTER OR YOU MIGHT LOCK YOU OUT
       # this is just an example. :-)
-      class { 'usbguard':
-        rules => [
-          $rule_content,
-          'reject with-interface all-of { 08:*:* 02:*:* }',
-        ],
+      usbguard::rule { 'allow usb disks without keyboard interface':
+        rule => $rule_content,
       }
       EOS
     end
