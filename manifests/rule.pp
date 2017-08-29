@@ -1,5 +1,10 @@
 # Manage a usbguard rule
-# 
+#
+# The usbguard class needs to be included before calling this
+# defined type.
+#
+# @summary Add a usbguard rule
+#
 # @param rule A line of rules.conf
 # @param order Order for the concat resource
 define usbguard::rule(
