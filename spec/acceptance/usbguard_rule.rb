@@ -10,7 +10,7 @@ describe 'usbguard::rule defined type' do
     end
 
     it_behaves_like 'a idempotent resource'
-    describe file('/etc/usbguard/rules-managed-by-puppet.conf') do
+    describe file('/etc/usbguard/rules.conf') do
       it { is_expected.to be_file }
       its(:content) { is_expected.to match(%r{allow with-interface equals \{ 08:\*:\* \}}) }
     end
@@ -39,7 +39,7 @@ describe 'usbguard::rule defined type' do
 
     it_behaves_like 'a idempotent resource'
 
-    describe file('/etc/usbguard/rules-managed-by-puppet.conf') do
+    describe file('/etc/usbguard/rules.conf') do
       it { is_expected.to be_file }
       its(:content) { is_expected.to match('reject with-interface all-of { 08:\*:\* 03:00:\* }') }
     end

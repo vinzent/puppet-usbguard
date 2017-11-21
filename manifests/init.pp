@@ -56,7 +56,7 @@ class usbguard(
   Array[String] $daemon_ipc_allowed_users = ['root'],
   Enum['allow','block','reject','keep','apply-policy'] $daemon_present_controller_policy = 'keep',
   Enum['allow','block','reject','keep','apply-policy'] $daemon_present_device_policy= 'apply-policy',
-  String $daemon_rule_file = '/etc/usbguard/rules-managed-by-puppet.conf',
+  String $daemon_rule_file = '/etc/usbguard/rules.conf',
 
   # rules to provide by hiera/lookup or as class param
   Optional[Array[String]] $rules = undef,

@@ -18,7 +18,7 @@ describe 'usbguard class' do
       its(:content) { is_expected.to match('Managed by puppet') }
     end
 
-    describe file('/etc/usbguard/rules-managed-by-puppet.conf') do
+    describe file('/etc/usbguard/rules.conf') do
       it { is_expected.to be_file }
     end
 
@@ -51,7 +51,7 @@ describe 'usbguard class' do
 
     it_behaves_like 'a idempotent resource'
 
-    describe file('/etc/usbguard/rules-managed-by-puppet.conf') do
+    describe file('/etc/usbguard/rules.conf') do
       it { is_expected.to be_file }
       its(:content) { is_expected.to match('reject with-interface all-of { 08:\*:\* 03:00:\* }') }
     end

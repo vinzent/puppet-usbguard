@@ -26,7 +26,7 @@ Usbguard is available for RHEL/CentOS >= 7.4 and Fedora.
 
 * the usbguard package
 * the usbguard-daemon.conf file 
-* the rules file (by default `/etc/usbguard/rules-managed-by-puppet.conf`)
+* the rules file (by default `/etc/usbguard/rules.conf`)
 
 ### Beginning with usbguard  
 
