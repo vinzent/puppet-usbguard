@@ -1,10 +1,10 @@
 ---
 HOSTS:
-  fedora-25-x64:
+  fedora-26-x64:
     roles:
       - master
-    platform: fedora-25-x86_64
-    box: fedora/25-cloud-base
+    platform: fedora-26-x86_64
+    box: fedora/26-cloud-base
     hypervisor: vagrant
 CONFIG:
   type: aio

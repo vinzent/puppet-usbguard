@@ -1,0 +1,14 @@
+---
+# platform is fedora 26 because there is no
+# puppet-agent for fedora 27 by 2017-11-20
+HOSTS:
+  fedora-27-x64:
+    roles:
+      - master
+    platform: fedora-26-x86_64
+    box: fedora/26-cloud-base
+    hypervisor: vagrant
+CONFIG:
+  type: aio
+...
+# vim: syntax=yaml
